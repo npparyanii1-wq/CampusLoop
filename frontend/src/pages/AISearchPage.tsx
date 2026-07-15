@@ -89,46 +89,39 @@ export default function AISearchPage() {
       {/* AI Results */}
       {result && !loading && (
         <div className="mt-lg animate-slide-up">
-          {/* Rationale */}
-          <div
-            className="glass-card glass-card--static mb-lg"
-            style={{ padding: 'var(--cl-space-lg)', borderLeft: '3px solid var(--cl-primary-500)' }}
-          >
-            <div className="flex items-center gap-sm mb-md">
-              <span style={{ fontSize: 20 }}>🤖</span>
-              <span className="font-bold">AI Analysis</span>
-            </div>
-            <p className="text-sm" style={{ lineHeight: 1.7 }}>{result.rationale}</p>
-            {result.predictedReturnDate && (
-              <div className="mt-md">
-                <span className="badge badge--primary">
-                  📅 Expected availability: {result.predictedReturnDate}
-                </span>
-              </div>
-            )}
-          </div>
-
           {/* Matched assets */}
-          {result.assets && result.assets.length > 0 ? (
-            <div className="page-grid page-grid--3">
-              {result.assets.map((asset) => (
-                <div key={asset.id} className="glass-card" style={{ padding: 'var(--cl-space-lg)' }}>
+          {result.matches && result.matches.length > 0 ? (
+            <div className="page-grid page-grid--2">
+              {result.matches.map((m) => (
+                <div key={m.asset.id} className="glass-card" style={{ padding: 'var(--cl-space-lg)' }}>
                   <div className="flex items-center gap-sm mb-md">
-                    <span style={{ fontSize: 24 }}>{assetIcon(asset.category)}</span>
+                    <span style={{ fontSize: 24 }}>{assetIcon(m.asset.category)}</span>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div className="font-bold truncate">{asset.name}</div>
+                      <div className="font-bold truncate">{m.asset.name}</div>
                       <div className="text-xs text-muted">
-                        {asset.department?.name || 'General'}
+                        {m.asset.department?.name || 'General'}
                       </div>
                     </div>
-                    <span className={`badge badge--${asset.status === 'available' ? 'success' : 'warning'}`}>
-                      {asset.status}
+                    <span className={`badge badge--${m.asset.status === 'available' ? 'success' : 'warning'}`}>
+                      {m.asset.status}
                     </span>
                   </div>
                   <p className="text-sm text-secondary mb-md">
-                    {asset.description?.substring(0, 100)}
+                    {m.asset.description?.substring(0, 100)}
                   </p>
-                  <span className="badge badge--neutral">{asset.condition}</span>
+                  
+                  {/* Rationale embedded in card */}
+                  <div className="mb-md" style={{ padding: 'var(--cl-space-sm)', background: 'var(--cl-bg-glass)', borderRadius: 'var(--cl-radius-sm)', borderLeft: '3px solid var(--cl-primary-500)' }}>
+                    <div className="text-xs font-bold mb-xs">🤖 AI Analysis</div>
+                    <div className="text-xs text-secondary">{m.rationale}</div>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="badge badge--neutral">{m.asset.condition}</span>
+                    {m.predictedReturnDate && m.asset.status !== 'available' && (
+                       <span className="text-xs text-primary font-semibold">📅 Returns: {new Date(m.predictedReturnDate).toLocaleDateString()}</span>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -136,11 +129,6 @@ export default function AISearchPage() {
             <div className="glass-card glass-card--static empty-state">
               <div className="empty-state__icon">🤷</div>
               <div className="empty-state__title">No exact matches found</div>
-              {result.fallbackSuggestion && (
-                <div className="empty-state__description">
-                  💡 {result.fallbackSuggestion}
-                </div>
-              )}
             </div>
           )}
         </div>

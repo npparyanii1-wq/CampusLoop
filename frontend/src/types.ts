@@ -109,10 +109,12 @@ export interface StudyGroupInterest {
 /* --- AI Response Types --- */
 
 export interface AISearchResult {
-  assets: Asset[];
-  rationale: string;
-  predictedReturnDate?: string;
-  fallbackSuggestion?: string;
+  matches: Array<{
+    asset: Asset;
+    rationale: string;
+    predictedReturnDate: string;
+  }>;
+  alternatives: Asset[];
 }
 
 export interface ConditionAssessment {
