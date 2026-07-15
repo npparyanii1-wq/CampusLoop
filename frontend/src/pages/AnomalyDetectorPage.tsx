@@ -11,7 +11,7 @@ export default function AnomalyDetectorPage() {
   const handleScan = async () => {
     setLoading(true);
     try {
-      const data = await api.post<AnomalyReport[]>('/analytics/anomaly-scan');
+      const data = await api.get<AnomalyReport[]>('/analytics/anomalies');
       setAnomalies(data);
       addToast('success', `Scan complete: ${data.length} anomalies detected`);
     } catch (err: unknown) {
