@@ -21,8 +21,12 @@ export class StudyGroupsService {
     private readonly notificationsGateway: NotificationsGateway,
   ) {}
 
-  async getMyInterests(userId: string): Promise<StudyGroupInterest[]> {
-    return this.interestRepo.find({ where: { userId } });
+  async getMyInterests(userId: string): Promise<any[]> {
+    const interests = await this.interestRepo.find({ where: { userId } });
+    return interests.map(i => ({
+      ...i,
+      availabilitySlots: i.availabilitySlots ? JSON.parse(i.availabilitySlots) : [],
+    }));
   }
 
   async registerInterest(dto: RegisterInterestDto, user: any): Promise<StudyGroupInterest> {
