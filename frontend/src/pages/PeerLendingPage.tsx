@@ -8,7 +8,7 @@ export default function PeerLendingPage() {
   const [loans, setLoans] = useState<PeerLoan[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
-  const [form, setForm] = useState({ title: '', description: '', category: 'textbook', condition: 'good' });
+  const [form, setForm] = useState({ name: '', description: '', category: 'textbook', condition: 'good' });
   const { addToast } = useToastStore();
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function PeerLendingPage() {
       await api.post('/peer-lending/listings', form);
       addToast('success', 'Listing created!');
       setShowCreate(false);
-      setForm({ title: '', description: '', category: 'textbook', condition: 'good' });
+      setForm({ name: '', description: '', category: 'textbook', condition: 'good' });
       loadData();
     } catch (err: unknown) {
       addToast('error', (err as Error).message);
@@ -84,7 +84,7 @@ export default function PeerLendingPage() {
                 <span className={`badge badge--${loan.status === 'active' ? 'success' : loan.status === 'requested' ? 'warning' : 'neutral'}`}>
                   {loan.status}
                 </span>
-                <span className="text-sm">{loan.listing?.title || `Loan #${loan.id}`}</span>
+                <span className="text-sm">{loan.listing?.name || `Loan #${loan.id}`}</span>
               </div>
             ))}
           </div>
@@ -107,11 +107,11 @@ export default function PeerLendingPage() {
               <div className="flex items-center gap-sm mb-md">
                 <span style={{ fontSize: 24 }}>{categoryIcon(listing.category)}</span>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div className="font-bold truncate">{listing.title}</div>
+                  <div className="font-bold truncate">{listing.name}</div>
                   <div className="text-xs text-muted">by {listing.owner?.firstName || 'Unknown'}</div>
                 </div>
-                <span className={`badge ${listing.available ? 'badge--success' : 'badge--neutral'}`}>
-                  {listing.available ? 'Available' : 'Lent Out'}
+                <span className={`badge ${listing.status === 'available' ? 'badge--success' : 'badge--neutral'}`}>
+                  {listing.status === 'available' ? 'Available' : 'Lent Out'}
                 </span>
               </div>
               <p className="text-sm text-secondary mb-md" style={{ lineHeight: 1.5 }}>
@@ -121,7 +121,7 @@ export default function PeerLendingPage() {
                 <span className="badge badge--neutral">{listing.category}</span>
                 <span className="text-xs text-muted">Condition: {listing.condition}</span>
               </div>
-              {listing.available && (
+              {listing.status === 'available' && (
                 <button
                   className="btn btn--primary btn--sm w-full mt-md"
                   onClick={() => handleRequest(listing.id)}
@@ -145,7 +145,7 @@ export default function PeerLendingPage() {
             <div className="modal__body">
               <div className="form-group">
                 <label className="form-label">Title</label>
-                <input className="form-input" placeholder="e.g. Calculus Textbook" value={form.title} onChange={(e) => setForm(f => ({ ...f, title: e.target.value }))} />
+                <input className="form-input" placeholder="e.g. Calculus Textbook" value={form.name} onChange={(e) => setForm(f => ({ ...f, name: e.target.value }))} />
               </div>
               <div className="form-group">
                 <label className="form-label">Description</label>
@@ -172,7 +172,7 @@ export default function PeerLendingPage() {
             </div>
             <div className="modal__footer">
               <button className="btn btn--secondary" onClick={() => setShowCreate(false)}>Cancel</button>
-              <button className="btn btn--primary" onClick={handleCreate} disabled={!form.title || !form.description}>Create Listing</button>
+              <button className="btn btn--primary" onClick={handleCreate} disabled={!form.name || !form.description}>Create Listing</button>
             </div>
           </div>
         </div>

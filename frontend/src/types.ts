@@ -57,15 +57,14 @@ export interface Booking {
 
 export interface PeerListing {
   id: string;
-  title: string;
+  name: string;
   description: string;
   category: string;
   condition: string;
-  imageUrl?: string;
-  available: boolean;
+  photoUrl?: string;
+  status: string;
   owner?: User;
   ownerId: string;
-  createdAt: string;
 }
 
 export interface PeerLoan {
@@ -74,10 +73,11 @@ export interface PeerLoan {
   listingId: string;
   borrower?: User;
   borrowerId: string;
-  status: 'requested' | 'approved' | 'active' | 'returned' | 'rejected';
+  status: string;
   borrowerRating?: number;
   lenderRating?: number;
-  createdAt: string;
+  borrowerReview?: string;
+  lenderReview?: string;
 }
 
 export interface LostFoundItem {
@@ -87,24 +87,23 @@ export interface LostFoundItem {
   lastSeenLocation: string;
   loggedAt: string;
   photoUrl?: string;
-  status: string; // 'reported' | 'resolved'
+  condition?: string;
+  status: string;
   matchedWithId?: string;
   matchProbability?: number;
   reportedBy?: User;
   reportedById: string;
-  createdAt: string;
 }
 
 export interface StudyGroupInterest {
   id: string;
-  module: string;
-  studyStyle: string;
-  preferredSlots: string[];
-  matched: boolean;
-  matchedGroup?: string;
+  moduleCode: string;
+  preferredStyle: string;
+  availabilitySlots: string[];
+  status: string;
+  matchedWithId?: string;
   user?: User;
   userId: string;
-  createdAt: string;
 }
 
 /* --- AI Response Types --- */

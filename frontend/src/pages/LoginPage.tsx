@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { useAuthStore } from '../stores/authStore';
 
 const QUICK_USERS = [
-  { email: 'alice@campus.edu', password: 'password123', label: 'Alice (Student CS)', dot: '#818cf8' },
-  { email: 'bob@campus.edu', password: 'password123', label: 'Bob (Student Chem)', dot: '#4ade80' },
-  { email: 'manager.cs@campus.edu', password: 'password123', label: 'CS Manager', dot: '#f59e0b' },
-  { email: 'manager.chem@campus.edu', password: 'password123', label: 'Chem Manager', dot: '#f472b6' },
-  { email: 'lf@campus.edu', password: 'password123', label: 'L&F Officer', dot: '#38bdf8' },
-  { email: 'admin@campus.edu', password: 'password123', label: 'Admin', dot: '#ef4444' },
+  { email: 'student_cs@meridian.edu', password: 'student123', label: 'Student (CS)', dot: '#818cf8' },
+  { email: 'student_chem@meridian.edu', password: 'student123', label: 'Student (Chem)', dot: '#4ade80' },
+  { email: 'cs_manager@meridian.edu', password: 'manager123', label: 'CS Manager', dot: '#f59e0b' },
+  { email: 'chem_manager@meridian.edu', password: 'manager123', label: 'Chem Manager', dot: '#f472b6' },
+  { email: 'lfofficer@meridian.edu', password: 'officer123', label: 'L&F Officer', dot: '#38bdf8' },
+  { email: 'admin@meridian.edu', password: 'admin123', label: 'Admin', dot: '#ef4444' },
 ];
 
 export default function LoginPage() {

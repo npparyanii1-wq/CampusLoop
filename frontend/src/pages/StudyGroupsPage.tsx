@@ -61,7 +61,7 @@ export default function StudyGroupsPage() {
     setMatching(true);
     setMatches([]);
     try {
-      const data = await api.get<StudyGroupMatch[]>(`/study-groups/matches/${selectedInterest.module}`);
+      const data = await api.get<StudyGroupMatch[]>(`/study-groups/matches/${selectedInterest.moduleCode}`);
       setMatches(data);
       if (data.length > 0) {
         addToast('success', `Found ${data.length} compatible study partners!`);
@@ -79,7 +79,7 @@ export default function StudyGroupsPage() {
     if (!selectedInterest) return;
     try {
       await api.post('/study-groups/invite', {
-        moduleCode: selectedInterest.module,
+        moduleCode: selectedInterest.moduleCode,
         inviteeUserId,
       });
       addToast('success', 'Invitation sent via real-time WebSocket!');
@@ -150,16 +150,16 @@ export default function StudyGroupsPage() {
                   }}
                 >
                   <div className="flex items-center justify-between mb-sm">
-                    <span className="font-bold">{interest.module}</span>
-                    <span className={`badge ${interest.matched ? 'badge--success' : 'badge--warning'}`}>
-                      {interest.matched ? 'Matched' : 'Searching'}
+                    <span className="font-bold">{interest.moduleCode}</span>
+                    <span className={`badge ${interest.status === 'matched' ? 'badge--success' : 'badge--warning'}`}>
+                      {interest.status === 'matched' ? 'Matched' : 'Searching'}
                     </span>
                   </div>
                   <div className="text-xs text-secondary mb-xs">
-                    Style: <span className="font-semibold">{interest.studyStyle}</span>
+                    Style: <span className="font-semibold">{interest.preferredStyle}</span>
                   </div>
                   <div className="flex gap-xs flex-wrap mt-sm">
-                    {interest.preferredSlots.map((s) => (
+                    {interest.availabilitySlots.map((s) => (
                       <span key={s} className="badge badge--neutral" style={{ fontSize: 9 }}>
                         {s}
                       </span>
@@ -180,7 +180,7 @@ export default function StudyGroupsPage() {
             </h3>
             <p className="text-sm text-secondary mb-lg">
               {selectedInterest
-                ? `Click match to find compatible study partners for ${selectedInterest.module}.`
+                ? `Click match to find compatible study partners for ${selectedInterest.moduleCode}.`
                 : 'Select an interest from the list to start matching.'}
             </p>
             <button
